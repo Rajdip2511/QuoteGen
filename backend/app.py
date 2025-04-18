@@ -28,6 +28,22 @@ PROMPT_TEMPLATES = [
     "Create a powerful quote (max 50 words) about self-belief. Return only the quote with no other text."
 ]
 
+@app.route('/')
+def home():
+    return jsonify({
+        "message": "Welcome to the Quote Generator API",
+        "status": "running"
+    })
+
+@app.route('/api/quotes')
+def get_quotes():
+    quotes = [
+        {"text": "The way to get started is to quit talking and begin doing.", "author": "Walt Disney"},
+        {"text": "Life is what happens when you're busy making other plans.", "author": "John Lennon"},
+        {"text": "The future belongs to those who believe in the beauty of their dreams.", "author": "Eleanor Roosevelt"}
+    ]
+    return jsonify(quotes)
+
 @app.route('/quote', methods=['GET'])
 def get_quote():
     headers = {
@@ -90,4 +106,4 @@ def get_quote():
         return jsonify({"error": f"Unexpected error: {str(e)}"}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000) 
+    app.run(host='0.0.0.0', port=5000, debug=True) 
