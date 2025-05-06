@@ -13,10 +13,9 @@ QuoteGen is a web application with a DevOps pipeline implementation. This report
 - Resource optimization through build stage separation
 
 ### 2.2 Backend Application
-- Node.js backend service containerized with Alpine base
+- Flask/python
 - Secure container configuration with non-root user (appuser)
 - Health check implementation for monitoring
-- TypeScript build process included
 - Proper dependency management
 
 ### 2.3 CI/CD Pipeline (Jenkinsfile)
@@ -86,9 +85,8 @@ Actually implemented security measures:
 ### Backend Container
 ```dockerfile
 # Multi-stage build
-- Node.js 18 Alpine base image
+- flask/python
 - Non-root user implementation
-- TypeScript build process
 - Health check on port 5000
 ```
 
