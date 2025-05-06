@@ -1,0 +1,8 @@
+---
+- name: Deploy QuoteGen App
+  hosts: localhost
+  connection: local
+  vars:
+    docker_hub_username: yourusername
+  roles:
+    - app-deploy

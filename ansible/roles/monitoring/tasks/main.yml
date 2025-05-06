@@ -1,0 +1,20 @@
+---
+- name: Create monitoring directory
+  file:
+    path: "~/monitoring"
+    state: directory
+
+- name: Copy monitoring configuration files
+  copy:
+    src: "{{ playbook_dir }}/../../monitoring/{{ item }}"
+    dest: "~/monitoring/"
+  with_items:
+    - prometheus-config.yaml
+    - prometheus-deployment.yaml
+    - grafana-deployment.yaml
+    - elk-stack.yaml
+
+- name: Apply monitoring manifests
+  command: kubectl apply -f ~/monitoring/
+  args:
+    chdir: "~/"

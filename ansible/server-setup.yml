@@ -1,0 +1,6 @@
+---
+- name: Server Setup
+  hosts: localhost
+  connection: local
+  roles:
+    - server-setup

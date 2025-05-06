@@ -1,38 +1,35 @@
-# Builder stage
-FROM node:18 AS builder
+# Build stage
+FROM node:18-alpine as build
 
 WORKDIR /app
 
 # Copy package files
-COPY package.json package-lock.json ./
+COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
-# Copy all files
+# Copy source code
 COPY . .
 
 # Build the application
 RUN npm run build
 
-# Runner stage
+# Production stage
 FROM nginx:alpine
 
-# Copy built files from builder stage
-COPY --from=builder /app/.next /usr/share/nginx/html
+# Copy build files
+COPY --from=build /app/build /usr/share/nginx/html
 
-# Expose port 3000
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port
 EXPOSE 3000
 
-# Configure nginx to listen on port 3000
-RUN echo 'server { \
-    listen 3000; \
-    location / { \
-        root /usr/share/nginx/html; \
-        index index.html index.htm; \
-        try_files $uri $uri/ /index.html; \
-    } \
-}' > /etc/nginx/conf.d/default.conf
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD wget -q --spider http://localhost:3000/health || exit 1
 
 # Start nginx
-CMD ["nginx", "-g", "daemon off;"] 
+CMD ["nginx", "-g", "daemon off;"]

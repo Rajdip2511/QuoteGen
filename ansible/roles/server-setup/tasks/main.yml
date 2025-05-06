@@ -1,0 +1,16 @@
+---
+- name: Install kubectl on Windows
+  win_chocolatey:
+    name: kubernetes-cli
+    state: present
+  when: ansible_os_family == "Windows"
+  ignore_errors: yes  # In case chocolatey is not installed
+
+- name: Check Kubernetes is running
+  command: kubectl get nodes
+  changed_when: false
+  register: kubectl_result
+
+- name: Show kubectl result
+  debug:
+    var: kubectl_result.stdout_lines

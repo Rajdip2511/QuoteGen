@@ -1,0 +1,6 @@
+---
+- name: Setup Monitoring
+  hosts: localhost
+  connection: local
+  roles:
+    - monitoring

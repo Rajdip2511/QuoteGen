@@ -1,0 +1,28 @@
+---
+- name: Create kubernetes directory
+  file:
+    path: "~/kubernetes"
+    state: directory
+
+- name: Copy Kubernetes manifests
+  copy:
+    src: "{{ playbook_dir }}/../../kubernetes/{{ item }}"
+    dest: "~/kubernetes/"
+  with_items:
+    - backend-deployment.yaml
+    - frontend-deployment.yaml
+    - ingress.yaml
+
+- name: Replace image names in manifests
+  replace:
+    path: "~/kubernetes/{{ item }}"
+    regexp: "rajdipdevops"
+    replace: "{{ docker_hub_username }}"
+  with_items:
+    - backend-deployment.yaml
+    - frontend-deployment.yaml
+
+- name: Apply Kubernetes manifests
+  command: kubectl apply -f ~/kubernetes/
+  args:
+    chdir: "~/"

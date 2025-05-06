@@ -1,0 +1,53 @@
+---
+- name: Add Kubernetes apt key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: Add Kubernetes repository
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: kubernetes.list
+
+- name: Install Kubernetes packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - kubelet
+    - kubeadm
+    - kubectl
+
+- name: Initialize Kubernetes cluster
+  command: kubeadm init --pod-network-cidr=10.244.0.0/16
+  register: kubeadm_init
+  when: inventory_hostname == groups['kubernetes_master'][0]
+
+- name: Create .kube directory
+  file:
+    path: ~/.kube
+    state: directory
+    mode: '0755'
+  when: inventory_hostname == groups['kubernetes_master'][0]
+
+- name: Copy kube config
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: ~/.kube/config
+    remote_src: yes
+  when: inventory_hostname == groups['kubernetes_master'][0]
+
+- name: Install Calico network plugin
+  command: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+  when: inventory_hostname == groups['kubernetes_master'][0]
+
+- name: Get join command
+  command: kubeadm token create --print-join-command
+  register: join_command
+  when: inventory_hostname == groups['kubernetes_master'][0]
+
+- name: Join worker nodes
+  command: "{{ hostvars[groups['kubernetes_master'][0]]['join_command'].stdout }}"
+  when: inventory_hostname in groups['kubernetes_workers'] 

@@ -1,0 +1,26 @@
+---
+- name: Setup Kubernetes Cluster
+  hosts: kubernetes_cluster
+  become: true
+  roles:
+    - kubernetes
+
+- name: Setup Monitoring Stack
+  hosts: monitoring_servers
+  become: true
+  roles:
+    - prometheus
+    - grafana
+    - elk
+
+- name: Setup Jenkins
+  hosts: ci_servers
+  become: true
+  roles:
+    - jenkins
+
+- name: Setup Docker Registry
+  hosts: registry_servers
+  become: true
+  roles:
+    - docker_registry 

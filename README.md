@@ -1,109 +1,85 @@
-# Random Quote Generator
+# QuoteGen - Scalable Web Application with Full DevOps Pipeline
 
-A web application that generates inspirational quotes using the Mistral AI API. The application consists of a Flask backend and a Next.js frontend with Shadcn UI components.
+## Repository Information
+- GitHub Repository: https://github.com/Rajdip2511/QuoteGen.git
+- Clone URL: `https://github.com/Rajdip2511/QuoteGen.git`
 
-## Project Structure
+## Project Overview
+This project implements a scalable web application with a complete DevOps pipeline, incorporating:
+- Version control with Git
+- CI/CD pipeline using Jenkins
+- Configuration management with Ansible
+- Container orchestration using Kubernetes
+- Monitoring and logging with Prometheus, Grafana, and ELK Stack
 
+## Architecture
+- Frontend: React.js application
+- Backend: flask/python
+- Container Runtime: Docker
+- Orchestration: Kubernetes
+- Monitoring: Prometheus + Grafana
+- Logging: ELK Stack
+- ci/cd : jenkins
+- codeDeployment: Github
+## Directory Structure
 ```
-random-quote-generator/
-├── backend/               # Flask API to generate quotes
-│   ├── app.py             # Flask app with /quote endpoint
-│   ├── requirements.txt   # Python dependencies
-│   ├── .env               # Stores MISTRAL_API_KEY
-│   └── README.md          # Backend setup instructions
-├── frontend/              # Next.js frontend
-│   ├── src/               
-│   │   ├── app/           # Next.js App Router
-│   │   ├── components/    # React components
-│   │   └── lib/           # Utility functions
-│   ├── package.json       # Node dependencies
-│   ├── .env.local         # Stores backend API URL
-│   └── README.md          # Frontend setup instructions
-└── README.md              # This file
+QuoteGen/
+├── frontend/           # React.js frontend application
+├── backend/           # Node.js backend API
+├── kubernetes/        # Kubernetes manifests
+├── ansible/          # Ansible playbooks
+├── monitoring/       # Monitoring configurations
+│   ├── prometheus/   # Prometheus configs
+│   ├── grafana/      # Grafana dashboards
+│   └── elk/          # ELK Stack setup
+├── Jenkinsfile       # CI/CD pipeline definition
+└── docker-compose.yml # Local development setup
 ```
 
 ## Setup Instructions
 
-### Step 1: Set up the Backend
+### Prerequisites
+- Docker
+- Kubernetes cluster
+- Jenkins
+- Ansible
+- Node.js
+- npm
 
-1. Navigate to the backend directory:
+### Local Development
+1. Clone the repository:
    ```bash
-   cd backend
+   git clone https://github.com/Rajdip2511/QuoteGen.git
    ```
 
-2. Create a virtual environment and activate it:
+2. Start local development environment:
    ```bash
-   # Windows
-   python -m venv venv
-   venv\Scripts\activate
-   
-   # macOS/Linux
-   python3 -m venv venv
-   source venv/bin/activate
+   docker-compose up
    ```
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+### Production Deployment
+1. Configure Jenkins credentials
+2. Set up Kubernetes cluster
+3. Deploy using Jenkins pipeline:
+   - Push to main branch
+   - Jenkins will automatically build and deploy
 
-4. Run the Flask server:
-   ```bash
-   python app.py
-   ```
-   The backend will be available at `http://localhost:5000`.
+## Monitoring Setup
+- Prometheus: http://[your-domain]:9090
+- Grafana: http://[your-domain]:3000
+- Kibana: http://[your-domain]:5601
 
-### Step 2: Set up the Frontend
+## Security Considerations
+- HTTPS enabled
+- Container security policies
+- Network policies
+- Resource limits
+- Non-root container execution
 
-1. Open a new terminal and navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
+## Contributing
+1. Fork the repository
+2. Create feature branch
+3. Submit pull request
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
-   The frontend will be available at `http://localhost:3000`.
-
-## Features
-
-- **Backend**: Flask API that calls Mistral AI to generate inspirational quotes
-- **Frontend**: Modern UI with Shadcn UI components
-- **Responsive Design**: Works on both mobile and desktop
-- **Error Handling**: Proper error states for API failures
-
-## Technologies Used
-
-- **Backend**: 
-  - Flask (Python web framework)
-  - Mistral AI API for quote generation
-  
-- **Frontend**:
-  - Next.js 14 (React framework)
-  - Shadcn UI (UI component library)
-  - Tailwind CSS (Utility-first CSS framework)
-  - TypeScript (Type-safe JavaScript)
-
-## API Key
-
-The application uses the Mistral AI API with the following key (already included in `.env`):
-```
-MISTRAL_API_KEY=8lqveCj59so7n1NVXXAWLCTnF8Rizz7M
-```
-
-## Troubleshooting
-
-- **CORS Issues**: If you encounter CORS issues, ensure both servers are running and the frontend is requesting from `http://localhost:5000`.
-- **API Key Issues**: If the API key doesn't work, check the Mistral AI documentation for any changes to their authentication system.
-
-## Future Enhancements
-
-- Add the ability to save favorite quotes
-- Implement different quote categories
-- Add social media sharing functionality 
+## License
+MIT License - See LICENSE file for details 
